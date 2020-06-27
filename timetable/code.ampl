@@ -75,7 +75,7 @@ Computer_sessions{c in C}:
 sum{d in D, p in P, r in R_com} z[d,p,c,r] = n_com[c];
 
 # Make sure that there is some day between lectures when possible
-Sparse{d in D diff {5}, c in C diff {’MMG800’,’LGMA10’,’MMGK11’,’MMGL31’,’MMGF30’}}:
+Sparse{d in D diff {5}, c in C diff {'MMG800','LGMA10','MMGK11','MMGL31','MMGF30'}}:
 sum{p in P, r in R} (x[d,p,c,r] + x[d+1,p,c,r]) <= 1;
 
 # Forces the lectures for each course to be scheduled in the same room
@@ -92,30 +92,30 @@ sum{d in D, p in P} (y[d,p,c,r1] + y[d,p,c,r2])
 
 # Forces exercises to be scheduled directly after lectures
 # Works for courses that have number of lectures >= number of exercises
-Ex_after_lec{d in D, p in P diff {1}, c in C diff{’MSG830’,’LGMA10’}}: 
+Ex_after_lec{d in D, p in P diff {1}, c in C diff{'MSG830','LGMA10'}}: 
 sum{r in R_lec} (y[d,p,c,r]/g[c] - x[d,p-1,c,r]) <= 0;
 
 # Make sure that courses does not have more than 1 lecture each day
 Lecture_limit{d in D, c in C}: sum{p in P, r in R} x[d,p,c,r] <= 1;
 
 # The same for exercises
-Excercise_limit1{d in D, c in C diff (C_g union {’MMGL31’,’LGMA10’})}: sum{p in P, r in R} y[d,p,c,r] <= 1;
+Excercise_limit1{d in D, c in C diff (C_g union {'MMGL31','LGMA10'})}: sum{p in P, r in R} y[d,p,c,r] <= 1;
 
-Excercise_limit2{d in D}: sum{p in P, r in R} y[d,p,’MMGL31’,r] <= 2;
+Excercise_limit2{d in D}: sum{p in P, r in R} y[d,p,'MMGL31',r] <= 2;
 
 # The same for computerlabs
-Computer_limit{d in D, c in C diff {’MSG830’}}:
+Computer_limit{d in D, c in C diff {'MSG830'}}:
 sum{p in P, r in R} z[d,p,c,r] <= 1;
 
 # Locked sessions that can not be changed
-MMG300: x[2,2,’MMG300’,’Pascal’] + y[2,3,’MMG300’,’MVH12’] + x[4,2,’MMG300’,’Pascal’] + y[4,3,’MMG300’,’MVH12’] = 4;
+MMG300: x[2,2,'MMG300','Pascal'] + y[2,3,'MMG300','MVH12'] + x[4,2,'MMG300','Pascal'] + y[4,3,'MMG300','MVH12'] = 4;
 
-MVG300: x[1,3,’MVG300’,’Euler’] + z[1,4,’MVG300’,’MVF22’] + x[3,3,’MVG300’,’Euler’] + z[3,4,’MVG300’,’MVF22’] + x[5,3,’MVG300’,’Euler’] + z[5,4,’MVG300’,’MVF22’] = 6;
+MVG300: x[1,3,'MVG300','Euler'] + z[1,4,'MVG300','MVF22'] + x[3,3,'MVG300','Euler'] + z[3,4,'MVG300','MVF22'] + x[5,3,'MVG300','Euler'] + z[5,4,'MVG300','MVF22'] = 6;
 
-LGMA10: x[2,3,’LGMA10’,’Pascal’] + x[4,3,’LGMA10’,’Pascal’] + x[1,3,’LGMA10’,’Pascal’] + x[5,3,’LGMA10’,’Pascal’] + y[1,1,’LGMA10’,’MVF31’] + y[1,2,’LGMA10’,’MVF31’] + y[2,1,’LGMA10’,’MVF31’] + y[2,2,’LGMA10’,’MVF31’] + y[4,1,’LGMA10’,’MVF31’] + y[4,2,’LGMA10’,’MVF31’] + y[5,1,’LGMA10’,’MVF31’] + y[5,2,’LGMA10’,’MVF31’] = 12;
+LGMA10: x[2,3,'LGMA10','Pascal'] + x[4,3,'LGMA10','Pascal'] + x[1,3,'LGMA10','Pascal'] + x[5,3,'LGMA10','Pascal'] + y[1,1,'LGMA10','MVF31'] + y[1,2,'LGMA10','MVF31'] + y[2,1,'LGMA10','MVF31'] + y[2,2,'LGMA10','MVF31'] + y[4,1,'LGMA10','MVF31'] + y[4,2,'LGMA10','MVF31'] + y[5,1,'LGMA10','MVF31'] + y[5,2,'LGMA10','MVF31'] = 12;
 
-MSG830: x[2,2,’MSG830’,’Euler’] + x[4,3,’MSG830’,’Euler’] + y[3,2,’MSG830’,’MVF33’]
-+ z[2,3,’MSG830’,’MVF22’] + z[2,4,’MSG830’,’MVF22’] = 5;
+MSG830: x[2,2,'MSG830','Euler'] + x[4,3,'MSG830','Euler'] + y[3,2,'MSG830','MVF33']
++ z[2,3,'MSG830','MVF22'] + z[2,4,'MSG830','MVF22'] = 5;
 
-MMGF30: x[2,2,’MMGF30’,’MVF23’] + x[3,3,’MMGF30’,’MVF23’] + x[5,2,’MMGF30’,’MVF23’] = 3;
+MMGF30: x[2,2,'MMGF30','MVF23'] + x[3,3,'MMGF30','MVF23'] + x[5,2,'MMGF30','MVF23'] = 3;
 
