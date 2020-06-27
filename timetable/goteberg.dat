@@ -1,8 +1,8 @@
 # set D; # Days
 # set P; # Periods
 
-set D := Monday Tuesday Wednesday Thursday Friday;
-set P := A B C D;
+set D := 1 2 3 4 5;
+set P := 1 2 3 4;
 
 # set C_GU1; # Courses taken by GU students first year
 # set C_GU2; # Courses taken by GU students second year
@@ -28,7 +28,8 @@ set R_com := MVF22 ;
 # param n_ex{C}; # Number of excercises
 # param g{C}; # Number of groups for exercises
 
-param: C:	s	n_lec	n_ex	n_com	g:= 
+param:	
+		s	n_lec	n_ex	n_com	g:= 
 	MMG720	8	2	1	0	1
 	MMG300	38	2	2	0	1
 	MVG300	34	3	0	3	1
