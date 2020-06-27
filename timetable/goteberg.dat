@@ -1,8 +1,8 @@
 # set D; # Days
 # set P; # Periods
 
-set D := 1 2 3 4 5;
-set P := 1 2 3 4;
+set D := Monday Tuesday Wednesday Thursday Friday;
+set P := A B C D;
 
 # set C_GU1; # Courses taken by GU students first year
 # set C_GU2; # Courses taken by GU students second year
