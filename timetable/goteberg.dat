@@ -45,3 +45,17 @@ param:
 	MMGL31	20	4	6	2	1
 	LGMA10	35	4	8	0	1
 	MMGF30	21	3	0	0	1;
+
+param:
+		m:=
+	Euler	70
+	Pascal	60
+	MVF21	30
+	MVF23	30
+	MVF26	36
+	MVF31	42
+	MVF32	16
+	MVF33	36
+	MVH11	26
+	MVH12	38
+	MVF22	90;
