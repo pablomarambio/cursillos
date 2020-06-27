@@ -1,6 +1,29 @@
-set R_ex := MVF21 MVF23 MVF26 MVF31 MVF33 MVH11 MVH12 ;
-set R_lec := Euler Pascal MVF21 MVF23 MVF26 MVF31 MVF33 MVH11 MVH12 ;
-set R_com := MVF22 ;
+	set R_ex := MVF21 MVF23 MVF26 MVF31 MVF33 MVH11 MVH12 ;
+	set R_lec := Euler Pascal MVF21 MVF23 MVF26 MVF31 MVF33 MVH11 MVH12 ;
+	set R_com := MVF22 ;
 
-# set D := 1 2 3 4 5
-# set P := 1 2 3 4
+	# set D := 1 2 3 4 5
+	# set P := 1 2 3 4
+
+	# param s{C}; # Course size
+	# param n_com{C}; # Number of computer labs
+	# param n_lec{C}; # Number of lectures
+	# param n_ex{C}; # Number of excercises
+	# param g{C}; # Number of groups for exercises
+
+	param: C:	s	n_lec	n_ex	n_com	g:= 
+		MMG720	8	2	1	0	1
+		MMG300	38	2	2	0	1
+		MVG300	34	3	0	3	1
+		MMG800	55	4	0	0	1
+		MSG200	50	2	2	0	1
+		MMA511	13	3	0	0	1
+		MMG500	28	2	2	0	2
+		MSA200	11	2	1	0	1
+		MMA421	19	2	1	0	1
+		MSG830	44	2	1	2	1
+		MMGF20	29	2	2	0	1
+		MMGK11	49	4	4	0	2
+		MMGL31	20	4	6	2	1
+		LGMA10	35	4	8	0	1
+		MMGF30	21	3	0	0	1;
