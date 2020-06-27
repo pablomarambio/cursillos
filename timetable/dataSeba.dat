@@ -1,0 +1,6 @@
+set R_ex := MVF21 MVF23 MVF26 MVF31 MVF33 MVH11 MVH12 ;
+set R_lec := Euler Pascal MVF21 MVF23 MVF26 MVF31 MVF33 MVH11 MVH12 ;
+set R_com := MVF22 ;
+
+# set D := 1 2 3 4 5
+# set P := 1 2 3 4
