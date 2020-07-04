@@ -22,6 +22,7 @@ param n_lec{C}; # Number of lectures
 param n_ex{C}; # Number of excercises
 param g{C}; # Number of groups for exercises
 param aptitud{C,K}; # Ability to dictate a class
+param availability{K,D,P}; # Availability for each teacher
 
 var x{D,P,C,R} binary; # Lectures
 var y{D,P,C,R} binary; # Excercises
