@@ -3,6 +3,7 @@
 
 set D := 1 2 3 4 5;
 set P := 1 2 3 4;
+set K := K1, K2, K3, K4;
 
 # set C_GU1; # Courses taken by GU students first year
 # set C_GU2; # Courses taken by GU students second year
@@ -46,6 +47,24 @@ param:
 	MMGL31	20	4	6	2	1
 	LGMA10	35	4	8	0	1
 	MMGF30	21	3	0	0	1;
+
+param aptitud:
+		K1	K2	K3	K4	:=
+MMG720	0	0	1	2
+MMG300	0	0	1	2
+MVG300	3	0	1	2
+MMG800	0	0	1	2
+MSG200	0	0	1	2
+MMA511	0	0	1	2
+MMG500	0	0	4	4
+MSA200	0	0	4	4
+MMA421	0	0	4	4
+MSG830	2	0	1	2
+MMGF20	0	0	1	2
+MMGK11	0	0	1	0
+MMGL31	2	0	1	0
+LGMA10	0	0	1	0
+MMGF30	0	0	1	0;	
 
 param:
 		m:=

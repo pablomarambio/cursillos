@@ -21,7 +21,7 @@ param n_com{C}; # Number of computer labs
 param n_lec{C}; # Number of lectures
 param n_ex{C}; # Number of excercises
 param g{C}; # Number of groups for exercises
-param aptitud{K,C}; # Ability to dictate a class
+param aptitud{C,K}; # Ability to dictate a class
 
 var x{D,P,C,R} binary; # Lectures
 var y{D,P,C,R} binary; # Excercises
