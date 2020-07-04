@@ -1,5 +1,6 @@
 set D; # Days
 set P; # Periods
+set K; # Profes
 set C_GU1; # Courses taken by GU students first year
 set C_GU2; # Courses taken by GU students second year
 set C_EM1; # Courses taken by EM students first year
@@ -20,6 +21,7 @@ param n_com{C}; # Number of computer labs
 param n_lec{C}; # Number of lectures
 param n_ex{C}; # Number of excercises
 param g{C}; # Number of groups for exercises
+param aptitud{K,C}; # Ability to dictate a class
 
 var x{D,P,C,R} binary; # Lectures
 var y{D,P,C,R} binary; # Excercises
