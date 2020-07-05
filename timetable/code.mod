@@ -9,6 +9,7 @@ set C_adv; # Other courses that should not collide
 set C_others; # All other courses
 set C_g; # Set with courses that have their exercises splitted into small groups
 set C := C_GU1 union C_GU2 union C_EM1 union C_EM2 union C_adv union C_others;
+
 # All courses
 set R_ex; # Exercise rooms
 set R_lec; # Lecture rooms
@@ -31,7 +32,7 @@ var w1{c,r,k} binary; # Help variable to force lectures to be in the same room
 var w2{c,r,k} binary; # Help variable to force excercises to be in the same room
 
 # Object function
-minimize f: sum{d in D, c in C, r in R, k in K} (x[d,1,c,r,k] + x[d,3,c,r,k] + 4*x[d,4,c,r,k] + 3*y[d,1,c,r,k] + y[d,2,c,r,k] + 2*y[d,4,c,r,k] + 3*z[d,1,c,r,k] + z[d,2,c,r,k] + 2*z[d,4,c,r,k]) + sum{c in C, r in R} 5*(x[1,1,c,r,k] + y[1,1,c,r,k] + z[1,1,c,r,k] + x[5,4,c,r,k] + y[5,4,c,r,k] + z[5,4,c,r,k]);
+minimize f: sum{d in D, c in C, r in R, k in K} (x[d,1,c,r,k] + x[d,3,c,r,k] + 4*x[d,4,c,r,k] + 3*y[d,1,c,r,k] + y[d,2,c,r,k] + 2*y[d,4,c,r,k] + 3*z[d,1,c,r,k] + z[d,2,c,r,k] + 2*z[d,4,c,r,k]) + sum{c in C, r in R, k in K} 5*(x[1,1,c,r,k] + y[1,1,c,r,k] + z[1,1,c,r,k] + x[5,4,c,r,k] + y[5,4,c,r,k] + z[5,4,c,r,k]);
 
 subject to
 # Make sure that the classes fits in the rooms
@@ -43,6 +44,14 @@ Room_capacity_ex{d in D, p in P, c in C, r in R_ex, k in K}:
 
 Room_capacity_com{d in D, p in P, c in C, r in R_com, k in K}:
 z[d,p,c,r,k]*s[c] <= m[r];
+
+# Make sure each class is only taught by one teacher
+# para cada clase, curso, periodo y dia, la suma por profe debe ser igual a 1
+Teacher{c in C, p in P, d in D, r in R}:
+sum{k in K} (x[d,p,c,r,k] + y[d,p,c,r,k] + z[d,p,c,r,k]) <= 1;
+
+# TODO: el profe de cada lecture es el mismo de cada ejercicio y cada computer lab?
+
 
 # Make sure that two courses will not be scheduled in the same room at the same time
 Room_collision{d in D, p in P, r in R, k in K}:
@@ -77,12 +86,12 @@ sum{d in D, p in P, r in R_ex, k in K} y[d,p,c,r,k] = n_ex[c]*g[c];
 Computer_sessions{c in C}:
 sum{d in D, p in P, r in R_com, k in K} z[d,p,c,r,k] = n_com[c];
 
-# Make sure that there is some day between lectures when possible. D diff 5 porque no hay clases el sábado
+# Make sure that there is some day between lectures when possible. D diff 5 porque no hay clases el sabado
 Sparse{d in D diff {5}, c in C diff {'MMG800','LGMA10','MMGK11','MMGL31','MMGF30'}}:
 sum{p in P, r in R, k in K} (x[d,p,c,r,k] + x[d+1,p,c,r,k]) <= 1;
 
 # Forces the lectures for each course to be scheduled in the same room
-# TODO: en los colegios (1) cada grupo tiene siempre la misma sala, o (2) cada sala se utiliza principalmente sólo para una asignatura
+# TODO: en los colegios (1) cada grupo tiene siempre la misma sala, o (2) cada sala se utiliza principalmente solo para una asignatura
 Same_room_lec{c in C, r in R_lec}:
 sum{d in D, p in P, k in K} x[d,p,c,r,k] - w1[c,r,k]*n_lec[c] = 0;
 

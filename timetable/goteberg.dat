@@ -32,7 +32,7 @@ set R_com := MVF22 ;
 
 param:	
 		s	n_lec	n_ex	n_com	g:= 
-	MMG720	8	2		1	0	1
+	MMG720	8	2	1	0	1
 	MMG300	38	2	2	0	1
 	MVG300	34	3	0	3	1
 	MMG800	55	4	0	0	1
