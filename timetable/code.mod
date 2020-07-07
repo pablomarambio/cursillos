@@ -1,3 +1,4 @@
+#Find non ascii characters [^\x00-\x7f]
 set D; # Days
 set P; # Periods
 set K; # Profes
@@ -25,11 +26,11 @@ param g{C}; # Number of groups for exercises
 param aptitud{C,K}; # Ability to dictate a class
 param availability{K,D,P}; # Availability for each teacher
 
-var x{D,P,c,r,k} binary; # Lectures
-var y{D,P,c,r,k} binary; # Excercises
-var z{D,P,c,r,k} binary; # Computer labs
-var w1{c,r,k} binary; # Help variable to force lectures to be in the same room
-var w2{c,r,k} binary; # Help variable to force excercises to be in the same room
+var x{D,P,C,R,K} binary; # Lectures
+var y{D,P,C,R,K} binary; # Excercises
+var z{D,P,C,R,K} binary; # Computer labs
+var w1{C,R} binary; # Help variable to force lectures to be in the same room
+var w2{C,R} binary; # Help variable to force excercises to be in the same room
 
 # Object function
 minimize f: sum{d in D, c in C, r in R, k in K} (x[d,1,c,r,k] + x[d,3,c,r,k] + 4*x[d,4,c,r,k] + 3*y[d,1,c,r,k] + y[d,2,c,r,k] + 2*y[d,4,c,r,k] + 3*z[d,1,c,r,k] + z[d,2,c,r,k] + 2*z[d,4,c,r,k]) + sum{c in C, r in R, k in K} 5*(x[1,1,c,r,k] + y[1,1,c,r,k] + z[1,1,c,r,k] + x[5,4,c,r,k] + y[5,4,c,r,k] + z[5,4,c,r,k]);
@@ -46,11 +47,15 @@ Room_capacity_com{d in D, p in P, c in C, r in R_com, k in K}:
 z[d,p,c,r,k]*s[c] <= m[r];
 
 # Make sure each class is only taught by one teacher
-# para cada clase, curso, periodo y dia, la suma por profe debe ser igual a 1
-Teacher{c in C, p in P, d in D, r in R}:
+
+# make sure a teacher is no schedules for two courses at the same tim
+Teacher_collision{d in D, p in P, r in R, c in C}:
 sum{k in K} (x[d,p,c,r,k] + y[d,p,c,r,k] + z[d,p,c,r,k]) <= 1;
 
 # TODO: el profe de cada lecture es el mismo de cada ejercicio y cada computer lab?
+# para cada dia, periodo, room,class?, la suma por profe 
+
+#Each course, lecture or exercise can only be taught by one teacher
 
 
 # Make sure that two courses will not be scheduled in the same room at the same time
@@ -93,14 +98,14 @@ sum{p in P, r in R, k in K} (x[d,p,c,r,k] + x[d+1,p,c,r,k]) <= 1;
 # Forces the lectures for each course to be scheduled in the same room
 # TODO: en los colegios (1) cada grupo tiene siempre la misma sala, o (2) cada sala se utiliza principalmente solo para una asignatura
 Same_room_lec{c in C, r in R_lec}:
-sum{d in D, p in P, k in K} x[d,p,c,r,k] - w1[c,r,k]*n_lec[c] = 0;
+sum{d in D, p in P, k in K} x[d,p,c,r,k] - w1[c,r]*n_lec[c] = 0;
 
 # Forces the exercises for each course to be scheduled in the same room
 Same_room_ex1{c in C diff C_g, r in R_ex}:
-sum{d in D, p in P, k in K} y[d,p,c,r,k] - w2[c,r,k]*n_ex[c] = 0;
+sum{d in D, p in P, k in K} y[d,p,c,r,k] - w2[c,r]*n_ex[c] = 0;
 
 Same_room_ex2{c in C_g, r1 in R_ex, r2 in R_ex}:
-sum{d in D, p in P, k in K} (y[d,p,c,r,k1] + y[d,p,c,r,k2]) - w2[c,r,k1]*n_ex[c] - w2[c,r,k2]*n_ex[c] = 0;
+sum{d in D, p in P, k in K} (y[d,p,c,r1,k] + y[d,p,c,r2,k]) - w2[c,r1]*n_ex[c] - w2[c,r2]*n_ex[c] = 0;
 
 # Forces exercises to be scheduled directly after lectures
 # Works for courses that have number of lectures >= number of exercises
@@ -112,16 +117,16 @@ Lecture_limit{d in D, c in C}: sum{p in P, r in R, k in K} x[d,p,c,r,k] <= 1;
 
 # The same for exercises
 Excercise_limit1{d in D, c in C diff (C_g union {'MMGL31','LGMA10'})}: sum{p in P, r in R, k in K} y[d,p,c,r,k] <= 1;
-Excercise_limit2{d in D}: sum{p in P, r in R, k in K} y[d,p,'MMGL31',r] <= 2;
+Excercise_limit2{d in D}: sum{p in P, r in R, k in K} y[d,p,'MMGL31',r,k] <= 2;
 
 # The same for computerlabs
 Computer_limit{d in D, c in C diff {'MSG830'}}:
 sum{p in P, r in R, k in K} z[d,p,c,r,k] <= 1;
 
 # Locked sessions that can not be changed
-locked_sessions{k in K}:
-MMG300: x[2,2,'MMG300','Pascal',k] + y[2,3,'MMG300','MVH12',k] + x[4,2,'MMG300','Pascal',k] + y[4,3,'MMG300','MVH12',k] = 4;
-MVG300: x[1,3,'MVG300','Euler',k] + z[1,4,'MVG300','MVF22',k] + x[3,3,'MVG300','Euler',k] + z[3,4,'MVG300','MVF22',k] + x[5,3,'MVG300','Euler',k] + z[5,4,'MVG300','MVF22',k] = 6;
-LGMA10: x[2,3,'LGMA10','Pascal',k] + x[4,3,'LGMA10','Pascal',k] + x[1,3,'LGMA10','Pascal',k] + x[5,3,'LGMA10','Pascal',k] + y[1,1,'LGMA10','MVF31',k] + y[1,2,'LGMA10','MVF31',k] + y[2,1,'LGMA10','MVF31',k] + y[2,2,'LGMA10','MVF31',k] + y[4,1,'LGMA10','MVF31',k] + y[4,2,'LGMA10','MVF31',k] + y[5,1,'LGMA10','MVF31',k] + y[5,2,'LGMA10','MVF31',k] = 12;
-MSG830: x[2,2,'MSG830','Euler',k] + x[4,3,'MSG830','Euler',k] + y[3,2,'MSG830','MVF33',k] + z[2,3,'MSG830','MVF22',k] + z[2,4,'MSG830','MVF22',k] = 5;
-MMGF30: x[2,2,'MMGF30','MVF23',k] + x[3,3,'MMGF30','MVF23',k] + x[5,2,'MMGF30','MVF23',k] = 3;
+# locked_sessions{k in K}:
+# MMG300{k in K}: x[2,2,'MMG300','Pascal',k] + y[2,3,'MMG300','MVH12',k] + x[4,2,'MMG300','Pascal',k] + y[4,3,'MMG300','MVH12',k] = 4;
+# MVG300{k in K}: x[1,3,'MVG300','Euler',k] + z[1,4,'MVG300','MVF22',k] + x[3,3,'MVG300','Euler',k] + z[3,4,'MVG300','MVF22',k] + x[5,3,'MVG300','Euler',k] + z[5,4,'MVG300','MVF22',k] = 6;
+# LGMA10{k in K}: x[2,3,'LGMA10','Pascal',k] + x[4,3,'LGMA10','Pascal',k] + x[1,3,'LGMA10','Pascal',k] + x[5,3,'LGMA10','Pascal',k] + y[1,1,'LGMA10','MVF31',k] + y[1,2,'LGMA10','MVF31',k] + y[2,1,'LGMA10','MVF31',k] + y[2,2,'LGMA10','MVF31',k] + y[4,1,'LGMA10','MVF31',k] + y[4,2,'LGMA10','MVF31',k] + y[5,1,'LGMA10','MVF31',k] + y[5,2,'LGMA10','MVF31',k] = 12;
+# MSG830{k in K}: x[2,2,'MSG830','Euler',k] + x[4,3,'MSG830','Euler',k] + y[3,2,'MSG830','MVF33',k] + z[2,3,'MSG830','MVF22',k] + z[2,4,'MSG830','MVF22',k] = 5;
+# MMGF30{k in K}: x[2,2,'MMGF30','MVF23',k] + x[3,3,'MMGF30','MVF23',k] + x[5,2,'MMGF30','MVF23',k] = 3;

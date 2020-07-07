@@ -2,3 +2,4 @@ solve;
 display x;
 display y;
 display z;
+option gurobi_options 'OPTIONS';

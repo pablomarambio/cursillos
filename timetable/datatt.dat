@@ -1,0 +1,307 @@
+
+set D := 1 2 3 4 5; # Days
+set P := 1 2 3 4 5 6 7 8; # Periods in the day
+set K := K1 K2 K3 K4 K5 K6 KM KG; #docentes. KM for music and KG for gym
+
+set C_G1 := MAT1 LAN1 ENG1 CIE1 HIS1 PHY1 ART1 TEC1 MUS1 ORI1 REL1; # Courses taken by G1
+set C_G2 := MAT2 LAN2 ENG2 CIE2 HIS2 PHY2 ART2 TEC2 MUS2 ORI2 REL2; # Courses taken by G2
+set C_G3 := MAT3 LAN3 ENG3 CIE3 HIS3 PHY3 ART3 TEC3 MUS3 ORI3 REL3; # Courses taken by G3
+set C_G4 := MAT4 LAN4 ENG4 CIE4 HIS4 PHY4 ART4 TEC4 MUS4 ORI4 REL4; # Courses taken by G4
+set C_G5 := MAT5 LAN5 ENG5 CIE5 HIS5 PHY5 ART5 TEC5 MUS5 ORI5 REL5; # Courses taken by G5
+set C_G6 := MAT6 LAN6 ENG6 CIE6 HIS6 PHY6 ART6 TEC6 MUS6 ORI6 REL6; # Courses taken by G6
+set C_double := PHY1 PHY2; #courses forced to have two lectures per day
+
+
+# param:	
+# 	hours	room:= 
+# MAT1	10	R1   
+# LAN1	8	R1
+# ENG1	3	R1
+# CIE1	3	R1
+# HIS1	3	R1
+# PHY1	4	RGYM
+# ART1	2	R1
+# TEC1	1	R1
+# MUS1	2	RMUS
+# ORI1	1	R1
+# REL1	2	R1
+# MAT2	10	R2
+# LAN2	8	R2
+# ENG2	3	R2
+# CIE2	3	R2
+# HIS2	3	R2
+# PHY2	4	RGYM
+# ART2	2	R2
+# TEC2	1	R2
+# MUS2	2	RMUS
+# ORI2	1	R2
+# REL2	2	R2
+# MAT3	10	R3
+# LAN3	8	R3
+# ENG3	3	R3
+# CIE3	3	R3
+# HIS3	3	R3
+# PHY3	4	RGYM
+# ART3	2	R3
+# TEC3	1	R3
+# MUS3	2	RMUS
+# ORI3	1	R3
+# REL3	2	R3
+# MAT4	10	R4
+# LAN4	8	R4
+# ENG4	3	R4
+# CIE4	3	R4
+# HIS4	3	R4
+# PHY4	4	RGYM
+# ART4	2	R4
+# TEC4	1	R4
+# MUS4	2	RMUS
+# ORI4	1	R4
+# REL4	2	R4
+# MAT5	8	R5
+# LAN5	8	R5
+# ENG5	3	R5
+# CIE5	4	R5
+# HIS5	4	R5
+# PHY5	4	RGYM
+# ART5	1	R5
+# TEC5	2	R5
+# MUS5	2	RMUS
+# ORI5	1	R5
+# REL5	2	R5
+# MAT6	8	R6
+# LAN6	8	R6
+# ENG6	3	R6
+# CIE6	4	R6
+# HIS6	4	R6
+# PHY6	4	RGYM
+# ART6	1	R6
+# TEC6	2	R6
+# MUS6	2	RMUS
+# ORI6	1	R6
+# REL6	2	R6;
+
+param:	
+	hours := 
+MAT1	10
+LAN1	8
+ENG1	3
+CIE1	3
+HIS1	3
+PHY1	4
+ART1	2
+TEC1	1
+MUS1	2
+ORI1	1
+REL1	2
+MAT2	10
+LAN2	8
+ENG2	3
+CIE2	3
+HIS2	3
+PHY2	4
+ART2	2
+TEC2	1
+MUS2	2
+ORI2	1
+REL2	2
+MAT3	10
+LAN3	8
+ENG3	3
+CIE3	3
+HIS3	3
+PHY3	4
+ART3	2
+TEC3	1
+MUS3	2
+ORI3	1
+REL3	2
+MAT4	10
+LAN4	8
+ENG4	3
+CIE4	3
+HIS4	3
+PHY4	4
+ART4	2
+TEC4	1
+MUS4	2
+ORI4	1
+REL4	2
+MAT5	8
+LAN5	8
+ENG5	3
+CIE5	4
+HIS5	4
+PHY5	4
+ART5	1
+TEC5	2
+MUS5	2
+ORI5	1
+REL5	2
+MAT6	8
+LAN6	8
+ENG6	3
+CIE6	4
+HIS6	4
+PHY6	4
+ART6	1
+TEC6	2
+MUS6	2
+ORI6	1
+REL6	2;
+
+param contractHours:=
+K1	40
+K2	10
+K3	40
+K4	40
+K5	40
+K6	40
+KM	40
+KG	40;
+
+# K1 can also teach K2 classes if K2 is unavailable, and vice versa (they are a pair).
+# K3-K4, K5-K6 are also pairs. The most suitable for teaching GYM is KG
+# and for music it is KM
+param aptitud:
+	K1	K2	K3	K4	K5	K6	KM	KG :=
+MAT1	0	3	4	4	4	4	4	4
+LAN1	0	3	4	4	4	4	4	4
+ENG1	0	3	4	4	4	4	4	4
+CIE1	0	3	4	4	4	4	4	4
+HIS1	0	3	4	4	4	4	4	4
+PHY1	3	3	4	4	4	4	4	0
+ART1	0	3	4	4	4	4	4	4
+TEC1	0	3	4	4	4	4	4	4
+MUS1	3	3	4	4	4	4	0	4
+ORI1	0	3	4	4	4	4	4	4
+REL1	0	3	4	4	4	4	4	4
+MAT2	3	0	4	4	4	4	4	4
+LAN2	3	0	4	4	4	4	4	4
+ENG2	3	0	4	4	4	4	4	4
+CIE2	3	0	4	4	4	4	4	4
+HIS2	3	0	4	4	4	4	4	4
+PHY2	3	3	4	4	4	4	4	0
+ART2	3	0	4	4	4	4	4	4
+TEC2	3	0	4	4	4	4	4	4
+MUS2	3	3	4	4	4	4	0	4
+ORI2	3	0	4	4	4	4	4	4
+REL2	3	0	4	4	4	4	4	4
+MAT3	4	4	0	3	4	4	4	4
+LAN3	4	4	0	3	4	4	4	4
+ENG3	4	4	0	3	4	4	4	4
+CIE3	4	4	0	3	4	4	4	4
+HIS3	4	4	0	3	4	4	4	4
+PHY3	4	4	3	3	4	4	4	0
+ART3	4	4	0	3	4	4	4	4
+TEC3	4	4	0	3	4	4	4	4
+MUS3	4	4	3	3	4	4	0	4
+ORI3	4	4	0	3	4	4	4	4
+REL3	4	4	0	3	4	4	4	4
+MAT4	4	4	3	0	4	4	4	4
+LAN4	4	4	3	0	4	4	4	4
+ENG4	4	4	3	0	4	4	4	4
+CIE4	4	4	3	0	4	4	4	4
+HIS4	4	4	3	0	4	4	4	4
+PHY4	4	4	3	3	4	4	4	0
+ART4	4	4	3	0	4	4	4	4
+TEC4	4	4	3	0	4	4	4	4
+MUS4	4	4	3	3	4	4	0	4
+ORI4	4	4	3	0	4	4	4	4
+REL4	4	4	3	0	4	4	4	4
+MAT5	4	4	4	4	0	3	4	4
+LAN5	4	4	4	4	0	3	4	4
+ENG5	4	4	4	4	0	3	4	4
+CIE5	4	4	4	4	0	3	4	4
+HIS5	4	4	4	4	0	3	4	4
+PHY5	4	4	4	4	3	3	4	0
+ART5	4	4	4	4	0	3	4	4
+TEC5	4	4	4	4	0	3	4	4
+MUS5	4	4	4	4	3	3	0	4
+ORI5	4	4	4	4	0	3	4	4
+REL5	4	4	4	4	0	3	4	4
+MAT6	4	4	4	4	3	0	4	4
+LAN6	4	4	4	4	3	0	4	4
+ENG6	4	4	4	4	3	0	4	4
+CIE6	4	4	4	4	3	0	4	4
+HIS6	4	4	4	4	3	0	4	4
+PHY6	4	4	4	4	3	3	4	0
+ART6	4	4	4	4	3	0	4	4
+TEC6	4	4	4	4	3	0	4	4
+MUS6	4	4	4	4	3	3	0	4
+ORI6	4	4	4	4	3	0	4	4
+REL6	4	4	4	4	3	0	4	4;
+
+# param availability :=
+# 	[K1, *, *]:	1	2	3	4	5:=
+# 			1	4	0	0	0	0
+# 			2	4	0	0	0	0
+# 			3	0	0	0	0	0
+# 			4	0	0	0	0	0
+# 			5	0	0	0	0	0
+# 			6	0	0	0	0	0
+# 			7	0	0	0	0	0
+# 			8	0	0	0	0	4
+# 	[K2, *, *]:	1	2	3	4	5:=
+# 			1	0	0	0	0	0
+# 			2	0	0	0	0	0
+# 			3	0	0	0	0	0
+# 			4	0	0	0	0	0
+# 			5	0	0	0	0	0
+# 			6	0	0	0	0	0
+# 			7	0	0	4	0	0
+# 			8	0	0	4	0	4
+# 	[K3, *, *]:	1	2	3	4	5:=
+# 			1	0	0	0	0	0
+# 			2	0	0	0	0	0
+# 			3	0	0	0	0	0
+# 			4	0	0	0	0	0
+# 			5	0	0	0	0	0
+# 			6	0	0	0	0	0
+# 			7	0	0	0	0	0
+# 			8	0	0	0	0	4
+# 	[K4, *, *]:	1	2	3	4	5:=
+# 			1	4	4	4	4	4
+# 			2	0	0	0	0	0
+# 			3	0	0	0	0	0
+# 			4	0	0	0	0	0
+# 			5	0	0	0	0	0
+# 			6	0	0	0	0	0
+# 			7	0	0	0	0	0
+# 			8	0	0	0	0	4
+# 	[K5, *, *]:	1	2	3	4	5:=
+# 			1	0	0	0	0	0
+# 			2	0	0	0	0	0
+# 			3	0	0	0	0	0
+# 			4	0	0	0	0	0
+# 			5	0	0	0	0	0
+# 			6	0	0	0	0	0
+# 			7	0	0	0	0	0
+# 			8	0	0	0	0	4
+# 	[K6, *, *]:	1	2	3	4	5:=
+# 			1	0	0	0	0	0
+# 			2	0	0	0	0	0
+# 			3	0	0	0	0	0
+# 			4	0	0	0	0	0
+# 			5	0	0	0	0	0
+# 			6	0	0	0	0	0
+# 			7	4	0	0	0	0
+# 			8	4	0	0	0	4
+# 	[KM, *, *]:	1	2	3	4	5:=
+# 			1	4	4	4	4	4
+# 			2	4	4	4	4	4
+# 			3	4	4	4	4	4
+# 			4	4	4	4	4	4
+# 			5	0	0	0	0	0
+# 			6	0	0	0	0	0
+# 			7	0	0	0	0	0
+# 			8	0	0	0	0	4
+# 	[KG, *, *]:	1	2	3	4	5:=
+# 			1	0	0	4	0	0
+# 			2	0	0	4	0	0
+# 			3	0	0	4	0	0
+# 			4	0	0	4	0	0
+# 			5	0	0	4	0	0
+# 			6	0	0	4	0	0
+# 			7	0	0	4	0	0
+# 			8	0	0	4	0	4 ;
